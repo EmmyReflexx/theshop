@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TheShop - Login</title>
+  <link rel="shortcut icon" href="../images/favicon.jpg" type="image/x-icon">
+
+  <style>
+    @font-face {
+      font-family: 'RobotoBold';
+      src: url(../fonts/Roboto-Bold.ttf);
+    }
+
+    @font-face {
+      font-family: 'Cinzel';
+      src: url(../fonts/Cinzel-Bold.otf);
+    }
+
+    @font-face {
+      font-family: 'LexendDeca';
+      src: url(../fonts/LexendDeca-Bold.ttf);
+    }
+
+    @font-face {
+      font-family: 'LexendDecaRegular';
+      src: url(../fonts/LexendDeca-Regular.ttf);
+    }
+
+    :root {
+      /* Primary Colors */
+      --primary-color: rgb(44, 122, 248);
+      --primary-color-deep: rgb(5, 97, 246);
+
+      /* Neutral Colors */
+      --secondary-color: rgb(241, 241, 241);
+      --background-color: rgb(249, 250, 251);
+      --card-background: white;
+      --text-primary: #2d3748;
+      --text-secondary: #718096;
+      --text-gray: gray;
+      --border-color: rgb(229, 231, 235);
+      --shadow-color: rgba(32, 32, 32, 0.212);
+      --shadow-light: rgba(95, 95, 95, 0.581);
+      --white: white;
+      --black: black;
+      --error-color: red;
+      --link-color: rgb(54, 54, 242);
+    }
+
+    /* Dark theme */
+    [data-theme="dark"] {
+      --background-color: #0f172a;
+      --card-background: #1e293b;
+      --secondary-color: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-gray: #94a3b8;
+      --border-color: #475569;
+      --shadow-color: rgba(0, 0, 0, 0.4);
+      --shadow-light: rgba(0, 0, 0, 0.3);
+      --white: #1e293b;
+      --black: #f1f5f9;
+      --primary-color: rgb(66, 153, 255);
+      --primary-color-deep: rgb(29, 125, 255);
+      --link-color: rgb(96, 165, 250);
+    }
+
+    body {
+      margin: 0;
+      font-family: LexendDecaRegular, Arial, Helvetica, sans-serif;
+      background-color: var(--background-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      color: var(--text-primary);
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .login-container {
+      display: flex;
+      width: 100%;
+      max-width: 1000px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 10px 10px 30px var(--shadow-light);
+      background-color: var(--card-background);
+      transition: all 0.3s ease;
+    }
+
+    .left-container {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-color-deep));
+      flex: 1;
+      color: var(--white);
+      padding: 100px 0 100px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .left-container-login,
+    .left-container-signup {
+      position: absolute;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .left-container-signup {
+      transform: translateX(-110%);
+    }
+
+    .login-container.is-active .left-container {
+      transform: translateX(100%);
+    }
+
+    .login-container.is-active .left-container-signup {
+      transform: translateX(0);
+    }
+
+    .login-container.is-active .left-container-login {
+      transform: translateX(110%);
+    }
+
+    .left-container h1 {
+      margin: 0;
+      font-family: Cinzel, Arial, Helvetica, sans-serif;
+      font-size: 45px;
+    }
+
+    .left-container button {
+      width: 10rem;
+      height: 45px;
+      font-size: 20px;
+      font-weight: 600;
+      background-color: transparent;
+      border: var(--white) solid 2px;
+      color: var(--white);
+      border-radius: 10px;
+      margin-top: 30px;
+      transition: all 0.5s;
+      font-family: inherit;
+    }
+
+    .left-container button:hover {
+      background-color: var(--white);
+      color: var(--primary-color);
+      box-shadow: 5px 5px 50px var(--white);
+      scale: 1.08;
+    }
+
+    .login-right {
+      background-color: var(--card-background);
+      flex: 1;
+      padding: 10px;
+      padding-bottom: 50px;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .mobile-switch {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+      display: none;
+    }
+
+    .mobile-switch div {
+      display: flex;
+      background-color: var(--primary-color);
+      gap: 20px;
+      justify-content: center;
+      padding: 0 20px;
+      border-radius: 35px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .mobile-switch h4 {
+      z-index: 1;
+      font-size: 14px;
+      margin: 15px 0;
+      height: 100%;
+    }
+
+    .mobile-switch div div {
+      position: absolute;
+      background-color: var(--white);
+      top: 7px;
+      bottom: 7px;
+      left: 10px;
+      width: 20%;
+      transition: all 0.5s;
+    }
+
+    .mobile-switch.active div div {
+      transform: translateX(98%);
+    }
+
+    .mo1 {
+      color: var(--primary-color);
+      transition: color 0.5s;
+    }
+
+    .mo2 {
+      color: var(--white);
+      transition: color 0.5s;
+    }
+
+    .mobile-switch.active .mo1 {
+      color: var(--white);
+    }
+
+    .mobile-switch.active .mo2 {
+      color: var(--primary-color);
+    }
+
+    .login-right-login {
+      padding-top: 10px;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .login-right-signup {
+      position: absolute;
+      top: 0;
+      left: 10px;
+      right: 10px;
+      transform: translateX(120%);
+      transition: all 0.5s ease-in-out;
+    }
+
+    .login-container.is-active .login-right-signup {
+      transform: translateX(0);
+    }
+
+    .login-container.is-active .login-right-login {
+      transform: translateX(-120%);
+    }
+
+    .login-container.is-active .login-right {
+      transform: translateX(-100%);
+    }
+
+    input[type="email"],
+    input[type="text"],
+    input[type="password"] {
+      font-size: 16px;
+      padding: 15px;
+      display: block;
+      width: 90%;
+      margin: 7px 0 18px 0;
+      border-radius: 10px;
+      border: 2px var(--primary-color) solid;
+      background-color: var(--card-background);
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+    }
+
+    input[type="email"]::placeholder,
+    input[type="text"]::placeholder,
+    input[type="password"]::placeholder {
+      color: var(--text-secondary);
+    }
+
+    input[type="email"]:focus,
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: 1px var(--primary-color) solid;
+      box-shadow: 3px 3px 6px rgba(30, 116, 255, 0.371);
+    }
+
+    input[type="email"].is-wrong,
+    input[type="password"].is-wrong {
+      border: 2px var(--error-color) solid;
+    }
+
+    input[type="email"].is-wrong:focus,
+    input[type="password"].is-wrong:focus {
+      outline: 1px var(--error-color) solid;
+      box-shadow: 3px 3px 6px rgba(255, 0, 0, 0.371);
+    }
+
+    .login-right h1 {
+      color: var(--primary-color);
+      font-size: 2.5em;
+      text-align: center;
+    }
+
+    .login-right p {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--text-secondary);
+    }
+
+    label {
+      color: var(--text-primary);
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .remember-me label {
+      color: var(--text-primary);
+    }
+
+    .after-input {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .after-input a {
+      color: var(--link-color);
+      text-decoration: none;
+    }
+
+    .after-input a:hover {
+      text-decoration: underline;
+    }
+
+    .login-button,
+    .signup-button {
+      width: 100%;
+      font-size: 18px;
+      font-family: inherit;
+      padding: 10px;
+      background-color: var(--primary-color);
+      border: none;
+      border-radius: 15px;
+      margin-top: 15px;
+      margin-bottom: 50px;
+      color: var(--white);
+      transition: all 0.2s;
+    }
+
+    .login-button:hover,
+    .signup-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 10px 10px 30px var(--primary-color);
+    }
+
+    .login-result {
+      color: var(--error-color);
+      display: none;
+    }
+
+    @media(max-width: 768px) {
+      .left-container {
+        display: none;
+      }
+
+      .mobile-switch {
+        display: flex;
+      }
+
+      .login-container.is-active .login-right {
+        transform: translateX(0);
+      }
+
+      .login-right-signup {
+        padding-bottom: 0;
+        padding-top: 80px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="left-container">
+      <div class="left-container-login">
+        <h1>TheShop</h1>
+        <h2>Welcome Back!</h2>
+        <p>Sign in to access your personalized shopping experience, track orders, and manage your account.</p>
+        <button class="switch-signup">Sign Up</button>
+      </div>
+
+      <div class="left-container-signup">
+        <h1>TheShop</h1>
+        <h2>Create an Account</h2>
+        <p>Create an account to unlock exclusive benefits and personalized shopping experiences.</p>
+        <button class="switch-signin">Sign In</button>
+      </div>
+    </div>
+
+    <div class="login-right">
+      <div class="right-container">
+        <div class="mobile-switch">
+          <div>
+            <div class="md"></div>
+            <h4 class="mo1">Sign In</h4>
+            <h4 class="mo2">Sign Up</h4>
+          </div>
+        </div>
+
+        <div class="login-right-login">
+          <h1>Sign In</h1>
+          <p>Enter your credentials to access your account</p>
+
+          <form action="">
+            <label for="email-input">Email Address</label>
+            <input type="email" placeholder="Enter your email" name="email-address" id="emailInput" required>
+
+            <label for="password-input">Password</label>
+            <input required minlength="8" type="password" placeholder="Enter Your Password" id="passwordInput">
+            <p class="login-result">Wrong credentials..</p>
+
+            <div class="after-input">
+              <div class="remember-me">
+                <input type="checkbox" id="remember-checkbox">
+                <label for="remember-checkbox">Remember Me</label>
+              </div>
+              <a href="#">Forgot Password?</a>
+            </div>
+
+            <div class="button-container">
+              <button type="submit" class="login-button">Log In</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="login-right-signup">
+          <h1>Sign up</h1>
+          <p>Enter your credentials to create an account</p>
+
+          <form action="">
+            <label for="nameInput">Full Name</label>
+            <input type="text" placeholder="Enter your Name" name="name" id="nameInput" required>
+
+            <label for="signupEmailInput">Email Address</label>
+            <input type="email" placeholder="Enter your email" name="email-address" id="signupEmailInput" required>
+
+            <label for="signupPasswordInput">Password</label>
+            <input required minlength="8" type="password" placeholder="Enter Your Password" id="signupPasswordInput">
+
+            <div class="remember-me">
+              <input type="checkbox" id="terms-checkbox" required>
+              <label for="terms-checkbox">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy
+                  Policy</a></label>
+            </div>
+
+            <div class="button-container">
+              <button type="submit" class="signup-button">Sign Up</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const loginButton = document.querySelector('.login-button');
+    const signupButton = document.querySelector('.signup-button');
+    const loginContainer = document.querySelector('.login-container');
+    const switchSignin = document.querySelector('.switch-signin');
+    const switchSignup = document.querySelector('.switch-signup');
+    const mobileSwitch1 = document.querySelector('.mo1');
+    const mobileSwitch2 = document.querySelector('.mo2');
+
+    mobileSwitch2.addEventListener('click', () => {
+      document.querySelector('.mobile-switch').classList.add('active');
+      loginContainer.classList.add("is-active");
+    });
+
+    mobileSwitch1.addEventListener('click', () => {
+      document.querySelector('.mobile-switch').classList.remove('active');
+      loginContainer.classList.remove("is-active");
+    });
+
+    switchSignup.addEventListener('click', () => {
+      loginContainer.classList.add("is-active");
+    });
+
+    switchSignin.addEventListener('click', () => {
+      loginContainer.classList.remove("is-active");
+    });
+
+    const loginDetails = [{
+      email: 'theshop@domain.com',
+      password: '12345678'
+    }];
+
+    document.querySelector('.login-right-login form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      loginButton.innerHTML = `Loading...`;
+
+      setTimeout(() => {
+        checkLoginDetails();
+      }, 1500);
+    });
+
+    function checkLoginDetails() {
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      const loginResult = document.querySelector('.login-result');
+
+      if (email === loginDetails[0].email && password === loginDetails[0].password) {
+        loginButton.innerHTML = `Login Successful...`;
+        setTimeout(() => {
+          location.href = '../html/index.html';
+        }, 1000);
+      } else {
+        loginResult.style.display = 'block';
+        loginButton.innerHTML = `Log In`;
+        emailInput.classList.add('is-wrong');
+        passwordInput.classList.add('is-wrong');
+
+        setTimeout(() => {
+          loginResult.style.display = 'none';
+          emailInput.classList.remove('is-wrong');
+          passwordInput.classList.remove('is-wrong');
+        }, 3000);
+      }
+    }
+
+    // Signup form submission
+    document.querySelector('.login-right-signup form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      signupButton.innerHTML = `Creating Account...`;
+
+      setTimeout(() => {
+        signupButton.innerHTML = `Account Created!`;
+        setTimeout(() => {
+
+          loginContainer.classList.remove("is-active");
+          document.querySelector('.mobile-switch').classList.remove('active');
+          signupButton.innerHTML = `Sign Up`;
+        }, 1500);
+      }, 1500);
+    });
+  </script>
+</body>
+
+</html>

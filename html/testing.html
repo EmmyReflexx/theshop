@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TheShop - Products</title>
+  <style>
+    /* CSS Variables */
+    :root {
+      --primary-color: rgb(44, 122, 248);
+      --primary-color-deep: rgb(5, 97, 246);
+      --secondary-color: rgb(241, 241, 241);
+      --background-color: rgb(249, 250, 251);
+      --text-primary: #2d3748;
+      --text-secondary: #718096;
+      --text-gray: gray;
+      --border-color: rgb(229, 231, 235);
+      --shadow-color: rgba(32, 32, 32, 0.212);
+      --shadow-light: rgba(95, 95, 95, 0.581);
+      --icon-background: rgb(230, 237, 244);
+      --white: white;
+      --black: black;
+      --hover-overlay: rgba(241, 241, 241, 0.663);
+    }
+
+    /* Font Declarations */
+    @font-face {
+      font-family: 'RobotoBold';
+      src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+    }
+
+    @font-face {
+      font-family: 'Cinzel';
+      src: url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+    }
+
+    @font-face {
+      font-family: 'LexendDeca';
+      src: url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@700&display=swap');
+    }
+
+    @font-face {
+      font-family: 'LexendDecaRegular';
+      src: url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
+    }
+
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'LexendDecaRegular', Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding-top: 78px;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    p {
+      font-family: var(--primary-font);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Header Styles */
+    .header-container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 15px;
+      padding-right: 15px;
+      background-color: var(--white);
+      box-shadow: 3px 3px 6px var(--shadow-color);
+      height: 78px;
+      z-index: 1000;
+    }
+
+    .header-container h2 {
+      font-family: 'Cinzel', Arial, Helvetica, sans-serif;
+      font-size: 1.8rem;
+      margin: 10px;
+    }
+
+    .header-left span {
+      color: var(--primary-color);
+    }
+
+    .header-middle ul {
+      display: flex;
+      gap: 28px;
+    }
+
+    .header-middle li {
+      list-style: none;
+    }
+
+    .header-middle a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-family: 'LexendDeca', Arial, Helvetica, sans-serif;
+      transition: color 0.3s;
+    }
+
+    .header-middle a:hover,
+    .header-middle a.active {
+      color: var(--primary-color-deep);
+    }
+
+    .header-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .header-container svg {
+      max-height: 30px;
+      min-height: 23px;
+      cursor: pointer;
+      border-radius: 10px;
+      padding: 6px;
+      transition: all 0.5s;
+    }
+
+    .header-container svg:hover {
+      background-color: var(--background-color);
+    }
+
+    .hamburger-menu {
+      width: 28px;
+      cursor: pointer;
+      padding: 7px;
+      border-radius: 10px;
+      z-index: 2;
+      display: none;
+    }
+
+    .hamburger-menu div {
+      width: 100%;
+      background-color: var(--primary-color);
+      height: 4px;
+      margin-bottom: 4px;
+      border-radius: 10px;
+      transition: rotate 0.2s;
+    }
+
+    .hamburger-menu.mobile-active div:nth-child(1) {
+      rotate: 45deg;
+      transform: translateY(4.8px);
+    }
+
+    .hamburger-menu.mobile-active div:nth-child(2) {
+      display: none;
+    }
+
+    .hamburger-menu.mobile-active div:nth-child(3) {
+      rotate: -45deg;
+      transform: translateY(-5px);
+    }
+
+    /* Products Main Section */
+    .products-main {
+      padding: 30px 20px;
+    }
+
+    .products-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .products-header h1 {
+      font-family: 'LexendDeca', Arial, Helvetica, sans-serif;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .products-header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .products-container {
+      display: flex;
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Filters Sidebar */
+    .filters-sidebar {
+      width: 250px;
+      background-color: var(--white);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .filter-section {
+      margin-bottom: 25px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+    }
+
+    .filter-section:last-child {
+      border-bottom: none;
+    }
+
+    .filter-section h3 {
+      font-family: 'LexendDeca', Arial, Helvetica, sans-serif;
+      margin-bottom: 15px;
+      color: var(--text-primary);
+    }
+
+    .filter-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .filter-option:hover {
+      color: var(--primary-color);
+    }
+
+    .filter-option input {
+      cursor: pointer;
+    }
+
+    .apply-filters,
+    .reset-filters {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-family: 'LexendDeca', Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      transition: all 0.3s;
+      margin-bottom: 10px;
+    }
+
+    .apply-filters {
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+
+    .apply-filters:hover {
+      background-color: var(--primary-color-deep);
+    }
+
+    .reset-filters {
+      background-color: var(--secondary-color);
+      color: var(--text-primary);
+    }
+
+    .reset-filters:hover {
+      background-color: var(--border-color);
+    }
+
+    /* Products Grid */
+    .products-grid {
+      flex: 1;
+    }
+
+    .products-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      background-color: var(--white);
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .sort-options,
+    .view-options {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sort-options label,
+    .view-options span {
+      font-weight: bold;
+      color: var(--text-primary);
+    }
+
+    .sort-options select {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      font-family: inherit;
+    }
+
+    .view-btn {
+      padding: 8px 15px;
+      border: 1px solid var(--border-color);
+      background-color: var(--white);
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+
+    .view-btn.active,
+    .view-btn:hover {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-color: var(--primary-color);
+    }
+
+    .products-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .product-card {
+      background-color: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-image {
+      position: relative;
+      overflow: hidden;
+      height: 220px;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .product-card:hover .product-image img {
+      transform: scale(1.05);
+    }
+
+    .product-actions {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 15px;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+      transform: translateY(100%);
+      transition: transform 0.3s;
+    }
+
+    .product-card:hover .product-actions {
+      transform: translateY(0);
+    }
+
+    .quick-view,
+    .add-to-cart {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .quick-view {
+      background-color: var(--white);
+      color: var(--text-primary);
+    }
+
+    .quick-view:hover {
+      background-color: var(--secondary-color);
+    }
+
+    .add-to-cart {
+      background-color: var(--primary-color);
+      color: var(--white);
+    }
+
+    .add-to-cart:hover {
+      background-color: var(--primary-color-deep);
+    }
+
+    .product-info {
+      padding: 20px;
+    }
+
+    .product-info h4 {
+      font-family: 'LexendDeca', Arial, Helvetica, sans-serif;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .product-description {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .product-price {
+      font-family: 'LexendDeca', Arial, Helvetica, sans-serif;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 8px;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #ffc107;
+    }
+
+    .rating-count {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 40px;
+    }
+
+    .page-btn,
+    .next-btn {
+      padding: 8px 15px;
+      border: 1px solid var(--border-color);
+      background-color: var(--white);
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+
+    .page-btn.active,
+    .page-btn:hover {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-color: var(--primary-color);
+    }
+
+    .next-btn {
+      background-color: var(--primary-color);
+      color: var(--white);
+      border-color: var(--primary-color);
+    }
+
+    .next-btn:hover {
+      background-color: var(--primary-color-deep);
+    }
+
+    /* Footer Styles */
+    footer {
+      background-color: rgb(33, 37, 41);
+      padding: 50px 20px 20px;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-column h3 {
+      color: white;
+      font-family: 'LexendDeca', Arial, Helvetica, sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+
+    .footer-column h3 span {
+      color: var(--primary-color);
+    }
+
+    .footer-column p {
+      color: rgb(221, 221, 243);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-links li {
+      list-style: none;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: rgb(221, 221, 243);
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: rgb(221, 221, 243);
+      font-family: 'LexendDecaRegular', Arial, Helvetica, sans-serif;
+      transition: all 0.3s ease;
+      flex: 1;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-color);
+      transform: translateX(5px);
+    }
+
+    .contact-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    .social-links svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 50px;
+      padding-top: 20px;
+      text-align: center;
+    }
+
+    .footer-bottom p {
+      color: rgb(180, 180, 180);
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .products-container {
+        flex-direction: column;
+      }
+
+      .filters-sidebar {
+        width: 100%;
+        position: static;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-middle {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 160px;
+        background-color: var(--background-color);
+        border-left: 2px solid var(--primary-color);
+        transform: translateX(110%);
+        transition: transform 0.4s;
+        z-index: 2;
+      }
+
+      .hamburger-menu {
+        display: block;
+      }
+
+      nav ul {
+        flex-direction: column;
+        margin-top: 70px;
+      }
+
+      .header-middle.mobile-active {
+        transform: translateX(0%);
+      }
+
+      .hamburger-menu-overlay {
+        background-color: rgba(0, 0, 0, 0.571);
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        display: none;
+      }
+
+      .hamburger-menu-overlay.mobile-active {
+        display: block;
+      }
+
+      .products-controls {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
+
+      .products-list {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 480px) {
+      .products-list {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-container">
+      <div class="header-left">
+        <h2 class="header-logo">The<span>Shop</span></h2>
+      </div>
+
+      <div class="header-middle">
+        <nav>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#" class="active">Products</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="header-right">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+          <path fill="#2c7af8"
+            d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 416C351.5 416 416 351.5 416 272C416 192.5 351.5 128 272 128C192.5 128 128 192.5 128 272C128 351.5 192.5 416 272 416z" />
+        </svg>
+        <a href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+            <path fill="#2c7af8"
+              d="M24 48C10.7 48 0 58.7 0 72C0 85.3 10.7 96 24 96L69.3 96C73.2 96 76.5 98.8 77.2 102.6L129.3 388.9C135.5 423.1 165.3 448 200.1 448L456 448C469.3 448 480 437.3 480 424C480 410.7 469.3 400 456 400L200.1 400C188.5 400 178.6 391.7 176.5 380.3L171.4 352L475 352C505.8 352 532.2 330.1 537.9 299.8L568.9 133.9C572.6 114.2 557.5 96 537.4 96L124.7 96L124.3 94C119.5 67.4 96.3 48 69.2 48L24 48zM208 576C234.5 576 256 554.5 256 528C256 501.5 234.5 480 208 480C181.5 480 160 501.5 160 528C160 554.5 181.5 576 208 576zM432 576C458.5 576 480 554.5 480 528C480 501.5 458.5 480 432 480C405.5 480 384 501.5 384 528C384 554.5 405.5 576 432 576z" />
+          </svg>
+        </a>
+
+        <a href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+            <path fill="#2c7af8"
+              d="M320 312C386.3 312 440 258.3 440 192C440 125.7 386.3 72 320 72C253.7 72 200 125.7 200 192C200 258.3 253.7 312 320 312zM290.3 368C191.8 368 112 447.8 112 546.3C112 562.7 125.3 576 141.7 576L498.3 576C514.7 576 528 562.7 528 546.3C528 447.8 448.2 368 349.7 368L290.3 368z" />
+          </svg>
+        </a>
+
+        <div class="hamburger-menu">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="hamburger-menu-overlay"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="products-main">
+    <div class="products-header">
+      <h1>Our Products</h1>
+      <p>Discover our wide range of high-quality products</p>
+    </div>
+
+    <div class="products-container">
+      <aside class="filters-sidebar">
+        <div class="filter-section">
+          <h3>Categories</h3>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="checkbox" name="category" value="electronics">
+              <span>Electronics</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" name="category" value="fashion">
+              <span>Fashion</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" name="category" value="home">
+              <span>Home & Living</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" name="category" value="beauty">
+              <span>Beauty</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" name="category" value="sports">
+              <span>Sports</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3>Price Range</h3>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="radio" name="price" value="0-50">
+              <span>$0 - $50</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="price" value="50-100">
+              <span>$50 - $100</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="price" value="100-200">
+              <span>$100 - $200</span>
+            </label>
+            <label class="filter-option">
+              <input type="radio" name="price" value="200+">
+              <span>$200+</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3>Brand</h3>
+          <div class="filter-options">
+            <label class="filter-option">
+              <input type="checkbox" name="brand" value="apple">
+              <span>Apple</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" name="brand" value="samsung">
+              <span>Samsung</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" name="brand" value="sony">
+              <span>Sony</span>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" name="brand" value="nike">
+              <span>Nike</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="apply-filters">Apply Filters</button>
+        <button class="reset-filters">Reset</button>
+      </aside>
+
+      <section class="products-grid">
+        <div class="products-controls">
+          <div class="sort-options">
+            <label for="sort">Sort by:</label>
+            <select id="sort">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="name">Name A-Z</option>
+              <option value="newest">Newest First</option>
+            </select>
+          </div>
+          <div class="view-options">
+            <span>View:</span>
+            <button class="view-btn active" data-view="grid">Grid</button>
+            <button class="view-btn" data-view="list">List</button>
+          </div>
+        </div>
+
+        <div class="products-list grid-view">
+          <!-- Product 1 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Smart Watch">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Smart Watch Pro</h4>
+              <p class="product-description">Advanced smartwatch with health monitoring and GPS</p>
+              <div class="product-price">$199.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(128)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 2 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Wireless Headphones">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Wireless Headphones</h4>
+              <p class="product-description">Noise-cancelling wireless headphones with 30h battery</p>
+              <div class="product-price">$149.99</div>
+              <div class="product-rating">
+                ★★★★★ <span class="rating-count">(256)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 3 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Smart Speaker">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Smart Speaker</h4>
+              <p class="product-description">Voice-controlled smart speaker with premium sound</p>
+              <div class="product-price">$89.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(89)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 4 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Wrist Watch">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Luxury Wrist Watch</h4>
+              <p class="product-description">Elegant automatic wristwatch with leather strap</p>
+              <div class="product-price">$299.99</div>
+              <div class="product-rating">
+                ★★★★★ <span class="rating-count">(67)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 5 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Fitness Tracker">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Fitness Tracker</h4>
+              <p class="product-description">Waterproof activity tracker with heart rate monitor</p>
+              <div class="product-price">$79.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(142)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 6 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1599669454699-248893623440?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Gaming Headset">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Gaming Headset</h4>
+              <p class="product-description">7.1 surround sound gaming headset with microphone</p>
+              <div class="product-price">$129.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(203)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 7 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Portable Speaker">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Portable Speaker</h4>
+              <p class="product-description">Bluetooth speaker with 20W output and waterproof</p>
+              <div class="product-price">$59.99</div>
+              <div class="product-rating">
+                ★★★★★ <span class="rating-count">(178)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 8 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Chronograph Watch">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Chronograph Watch</h4>
+              <p class="product-description">Sport chronograph watch with multiple time zones</p>
+              <div class="product-price">$189.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(94)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 9 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Smart Band">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Smart Band 2</h4>
+              <p class="product-description">Fitness band with OLED display and sleep tracking</p>
+              <div class="product-price">$49.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(215)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 10 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Studio Headphones">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Studio Headphones</h4>
+              <p class="product-description">Professional studio headphones for audio mixing</p>
+              <div class="product-price">$199.99</div>
+              <div class="product-rating">
+                ★★★★★ <span class="rating-count">(87)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 11 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Mini Speaker">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Mini Bluetooth Speaker</h4>
+              <p class="product-description">Compact speaker with 12h battery life</p>
+              <div class="product-price">$39.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(163)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 12 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Diver Watch">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Diver Watch</h4>
+              <p class="product-description">Professional diving watch water resistant 300m</p>
+              <div class="product-price">$249.99</div>
+              <div class="product-rating">
+                ★★★★★ <span class="rating-count">(56)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 13 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Running Shoes">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Running Shoes</h4>
+              <p class="product-description">Lightweight running shoes with cushion technology</p>
+              <div class="product-price">$119.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(312)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 14 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Backpack">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Travel Backpack</h4>
+              <p class="product-description">Waterproof backpack with laptop compartment</p>
+              <div class="product-price">$79.99</div>
+              <div class="product-rating">
+                ★★★★★ <span class="rating-count">(189)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 15 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Wireless Earbuds">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Wireless Earbuds</h4>
+              <p class="product-description">True wireless earbuds with charging case</p>
+              <div class="product-price">$129.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(274)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 16 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Fitness Tracker Pro">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Fitness Tracker Pro</h4>
+              <p class="product-description">Advanced fitness tracker with GPS and heart rate</p>
+              <div class="product-price">$149.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(198)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 17 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Smart Watch Classic">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Smart Watch Classic</h4>
+              <p class="product-description">Elegant smartwatch with leather strap</p>
+              <div class="product-price">$229.99</div>
+              <div class="product-rating">
+                ★★★★★ <span class="rating-count">(143)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 18 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Noise Cancelling Headphones">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Noise Cancelling Headphones</h4>
+              <p class="product-description">Premium headphones with active noise cancellation</p>
+              <div class="product-price">$299.99</div>
+              <div class="product-rating">
+                ★★★★★ <span class="rating-count">(92)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 19 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Bluetooth Speaker">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Bluetooth Speaker</h4>
+              <p class="product-description">Portable speaker with 360° sound and bass boost</p>
+              <div class="product-price">$69.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(167)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 20 -->
+          <div class="product-card">
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                alt="Sports Watch">
+              <div class="product-actions">
+                <button class="quick-view">Quick View</button>
+                <button class="add-to-cart">Add to Cart</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <h4>Sports Watch</h4>
+              <p class="product-description">Rugged sports watch with multiple sport modes</p>
+              <div class="product-price">$179.99</div>
+              <div class="product-rating">
+                ★★★★☆ <span class="rating-count">(124)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pagination">
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">4</button>
+          <span>...</span>
+          <button class="page-btn">10</button>
+          <button class="next-btn">Next</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>The<span>Shop</span></h3>
+        <p>Your one-stop destination for all your shopping needs. Quality products, competitive prices, and excellent
+          customer service.</p>
+        <div class="social-links">
+          <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+              <path fill="currentColor"
+                d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z" />
+            </svg>
+          </a>
+          <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path fill="currentColor"
+                d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z" />
+            </svg>
+          </a>
+          <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path fill="currentColor"
+                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+            </svg>
+          </a>
+          <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+              <path fill="currentColor"
+                d="M496 256c0 137-111 248-248 248-25.6 0-50.2-3.9-73.4-11.1 10.1-16.5 25.2-43.5 30.8-65 3-11.6 15.4-59 15.4-59 8.1 15.4 31.7 28.5 56.8 28.5 74.8 0 128.7-68.8 128.7-154.3 0-81.9-66.9-143.2-152.9-143.2-107 0-163.9 71.8-163.9 150.1 0 36.4 19.4 81.7 50.3 96.1 4.7 2.2 7.2 1.2 8.3-3.3.8-3.4 5-20.3 6.9-28.1.6-2.5.3-4.7-1.7-7.1-10.1-12.5-18.3-35.3-18.3-56.6 0-54.7 41.4-107.6 112-107.6 60.9 0 103.6 41.5 103.6 100.9 0 67.1-33.9 113.6-78 113.6-24.3 0-42.6-20.1-36.7-44.8 7-29.5 20.5-61.3 20.5-82.6 0-19-10.2-34.9-31.4-34.9-24.9 0-44.9 25.7-44.9 60.2 0 22 7.4 36.8 7.4 36.8s-24.5 103.8-29 123.2c-5 21.4-3 51.6-.9 71.2C65.4 450.9 0 361.1 0 256 0 119 111 8 248 8s248 111 248 248z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Shop</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Customer Service</h3>
+        <ul class="footer-links">
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Size Guide</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contact Info</h3>
+        <ul class="footer-links">
+          <li>
+            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+              <path fill="currentColor"
+                d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 256c-35.3 0-64-28.7-64-64s28.7-64 64-64s64 28.7 64 64s-28.7 64-64 64z" />
+            </svg>
+            1234 Market St, City, Country
+          </li>
+          <li>
+            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path fill="currentColor"
+                d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
+            </svg>
+            (123) 000-0000
+          </li>
+          <li>
+            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path fill="currentColor"
+                d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
+            </svg>
+            info@theshop.com
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 TheShop. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Menu Toggle
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const headerMiddle = document.querySelector('.header-middle');
+    const overlay = document.querySelector('.hamburger-menu-overlay');
+
+    hamburgerMenu.addEventListener('click', () => {
+      hamburgerMenu.classList.toggle('mobile-active');
+      headerMiddle.classList.toggle('mobile-active');
+      overlay.classList.toggle('mobile-active');
+    });
+
+    // View Toggle
+    const viewButtons = document.querySelectorAll('.view-btn');
+    const productsList = document.querySelector('.products-list');
+
+    viewButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        viewButtons.forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        button.classList.add('active');
+
+        // Toggle grid/list view
+        if (button.dataset.view === 'grid') {
+          productsList.classList.remove('list-view');
+          productsList.classList.add('grid-view');
+        } else {
+          productsList.classList.remove('grid-view');
+          productsList.classList.add('list-view');
+        }
+      });
+    });
+
+    // Add to Cart Functionality
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const productCard = button.closest('.product-card');
+        const productName = productCard.querySelector('h4').textContent;
+        const productPrice = productCard.querySelector('.product-price').textContent;
+
+        // Show confirmation message
+        alert(`Added ${productName} to cart!`);
+
+        // Here you would typically add the product to a cart array or send to backend
+      });
+    });
+
+    // Quick View Functionality
+    const quickViewButtons = document.querySelectorAll('.quick-view');
+
+    quickViewButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const productCard = button.closest('.product-card');
+        const productName = productCard.querySelector('h4').textContent;
+        const productDescription = productCard.querySelector('.product-description').textContent;
+        const productPrice = productCard.querySelector('.product-price').textContent;
+
+        // Show product details in a modal (simplified as alert for this example)
+        alert(`Product: ${productName}\nDescription: ${productDescription}\nPrice: ${productPrice}`);
+
+        // In a real implementation, you would show a modal with more details
+      });
+    });
+
+    // Filter Functionality
+    const applyFiltersButton = document.querySelector('.apply-filters');
+    const resetFiltersButton = document.querySelector('.reset-filters');
+
+    applyFiltersButton.addEventListener('click', () => {
+      // Get selected filters
+      const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'))
+        .map(input => input.value);
+      const selectedPrice = document.querySelector('input[name="price"]:checked')?.value;
+      const selectedBrands = Array.from(document.querySelectorAll('input[name="brand"]:checked'))
+        .map(input => input.value);
+
+      // In a real implementation, you would filter products based on these selections
+      console.log('Applying filters:', {
+        categories: selectedCategories,
+        price: selectedPrice,
+        brands: selectedBrands
+      });
+
+      alert('Filters applied! (Check console for details)');
+    });
+
+    resetFiltersButton.addEventListener('click', () => {
+      // Reset all filter inputs
+      document.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false);
+      document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+
+      alert('Filters reset!');
+    });
+
+    // Sort Functionality
+    const sortSelect = document.getElementById('sort');
+
+    sortSelect.addEventListener('change', () => {
+      const sortValue = sortSelect.value;
+
+      // In a real implementation, you would sort products based on the selected option
+      console.log('Sorting by:', sortValue);
+
+      alert(`Products sorted by: ${sortSelect.options[sortSelect.selectedIndex].text}`);
+    });
+
+    // Pagination
+    const pageButtons = document.querySelectorAll('.page-btn');
+
+    pageButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        pageButtons.forEach(btn => btn.classList.remove('active'));
+        // Add active class to clicked button
+        button.classList.add('active');
+
+        // In a real implementation, you would load the corresponding page of products
+        console.log('Loading page:', button.textContent);
+      });
+    });
+  </script>
+</body>
+
+</html>
