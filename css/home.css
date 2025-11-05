@@ -312,6 +312,8 @@ p {
   padding-top: 50px;
   padding-bottom: 80px;
   border-bottom: var(--border-color) solid 3px;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .featured-products h1 {
@@ -772,4 +774,5 @@ footer {
   .offer-card {
     min-width: 100%;
   }
+
 }
