@@ -12,7 +12,7 @@ A modern, responsive e-commerce website with a clean and professional design. Th
 
 ## 🔗 Live Demo
 
-**[View Live Site](https://emmyreflexx.github.io/TheShop/)**
+**[View Live Site](https://emmyreflexx.github.io/theshop/)**
 
 ## 📖 Table of Contents
 
